@@ -1,0 +1,32 @@
+{
+  "name": "100088-dowellpayment-phonepay",
+  "version": "1.0.0",
+  "description": "Repository for handling payment transactions via Dowell API for PhaonePay.",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LL04-Finance-Dowell/100088-dowellpayment-phonepay.git"
+  },
+  "author": "Manish",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LL04-Finance-Dowell/100088-dowellpayment-phonepay/issues"
+  },
+  "homepage": "https://github.com/LL04-Finance-Dowell/100088-dowellpayment-phonepay#readme",
+  "dependencies": {
+    "axios": "^1.6.7",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.5",
+    "express": "^4.18.3",
+    "nodemon": "^3.1.0",
+    "sha256": "^0.2.0",
+    "uniqid": "^5.4.0",
+    "zod": "^3.22.4"
+  }
+}
