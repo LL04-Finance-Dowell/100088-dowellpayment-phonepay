@@ -23,15 +23,25 @@ const payment = asyncHandler(async (req, res) => {
     if (!dataValidation.success) {
         throw new CustomError("Invalid payload", 404);
     }
+    let url = new URL(redirect_url);
+    let searchParams = new URLSearchParams(url.search);
+    let payment_receipt_id = searchParams.get('payment_receipt_id');
+    let date = searchParams.get('date');
+    let workspace_id = searchParams.get('workspace_id');
+    let qrcode_id = searchParams.get('qrcode_id');
+    let seat_number = searchParams.get('seat_number');
 
+    url = `http://localhost:5000/validate-payment/${payment_receipt_id}/${date}/${workspace_id}/${qrcode_id}/${seat_number}`;
+
+    
     const response = await createPaymentRequest(
         userId,
         merchantId,
         amount,
-        redirect_url
-    );
-
-
+        url
+        );
+        
+        
     if (!response.success) {
         throw new CustomError("Failed to create a payment", 404);
     }
@@ -43,22 +53,26 @@ const payment = asyncHandler(async (req, res) => {
     });
 });
 
-const validatePaymentStatus = asyncHandler(async (req,res)=>{
-    const { merchantTransactionId } = req.params;
+const validatePaymentStatus = asyncHandler(async (req, res) => {
+    const { merchantTransactionId, date, workspace_id, qrcode_id, seat_number } = req.params;
 
-    if (!merchantTransactionId) {
-        throw new CustomError("Merchant Merchant transaction ID is required",404)
+    if (!merchantTransactionId || !date || !workspace_id || !qrcode_id || !seat_number) {
+        throw new CustomError("Incomplete parameters", 400);
     }
 
-    const response = await validatePayment(merchantTransactionId)
+    const response = await validatePayment(merchantTransactionId);
+    console.log(response);
 
     if (!response.success) {
-        throw new CustomError("Payment failed", 404)
+        throw new CustomError("Payment failed", 404);
     }
 
-    return res.status(200).json({
-        success: true,
-        message: "Payment is successfully"
-    });
-})
+    const payment_receipt_id = merchantTransactionId;
+    const successUrl = `https://www.q.uxlivinglab.online/success/?view=success&payment_receipt_id=${payment_receipt_id}&date=${date}&workspace_id=${workspace_id}&qrcode_id=${qrcode_id}&seat_number=${seat_number}`;
+    res.redirect(successUrl);
+});
+
+
+
 export { payment , validatePaymentStatus};
+

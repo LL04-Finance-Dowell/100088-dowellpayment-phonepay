@@ -15,7 +15,7 @@ app.use("/api/v1/", routes)
 app.get("/", (_req, res) => {
     res.status(200).json({
         success: true,
-        message: "If you are seeing this then, server is !down"
+        message: "If you are seeing this then, server 1.0.1 is !down"
     })
 })
 
