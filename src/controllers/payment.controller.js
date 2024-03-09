@@ -31,8 +31,10 @@ const payment = asyncHandler(async (req, res) => {
     let qrcode_id = searchParams.get('qrcode_id');
     let seat_number = searchParams.get('seat_number');
 
-    url = `http://localhost:5000/validate-payment/${payment_receipt_id}/${date}/${workspace_id}/${qrcode_id}/${seat_number}`;
+    // url = `http://localhost:5000/api/v1/phonepay/validate-payment/${payment_receipt_id}/${date}/${workspace_id}/${qrcode_id}/${seat_number}`;
+    url = `https://www.q.uxlivinglab.online/dowellpayment/phonepay/api/v1/phonepay/validate-payment/${payment_receipt_id}/${date}/${workspace_id}/${qrcode_id}/${seat_number}`;
 
+    console.log(url);
     
     const response = await createPaymentRequest(
         userId,
@@ -55,6 +57,7 @@ const payment = asyncHandler(async (req, res) => {
 
 const validatePaymentStatus = asyncHandler(async (req, res) => {
     const { merchantTransactionId, date, workspace_id, qrcode_id, seat_number } = req.params;
+    console.log(merchantTransactionId);
 
     if (!merchantTransactionId || !date || !workspace_id || !qrcode_id || !seat_number) {
         throw new CustomError("Incomplete parameters", 400);
@@ -69,6 +72,7 @@ const validatePaymentStatus = asyncHandler(async (req, res) => {
 
     const payment_receipt_id = merchantTransactionId;
     const successUrl = `https://www.q.uxlivinglab.online/success/?view=success&payment_receipt_id=${payment_receipt_id}&date=${date}&workspace_id=${workspace_id}&qrcode_id=${qrcode_id}&seat_number=${seat_number}`;
+    // const successUrl = "https://www.q.uxlivinglab.online/"
     res.redirect(successUrl);
 });
 
