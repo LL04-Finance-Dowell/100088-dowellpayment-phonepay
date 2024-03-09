@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  phonepay-backend:
+    build: .
+    restart: always
+    container_name: phonepay-backend
+    command: node index.js
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    environment:
+      MERCHANT_ID: ${MERCHANT_ID}
+      PHONE_PE_HOST_URL: ${PHONE_PE_HOST_URL}
+      SALT_INDEX: ${SALT_INDEX}
+      SALT_KEY: ${SALT_KEY}
+    networks:
+      - queue-net
+
+networks:
+    queue-net:
+        external: true
+  
